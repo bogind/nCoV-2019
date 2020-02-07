@@ -293,7 +293,7 @@ info.addTo(map);
 
 
 var legend = L.control({position: 'bottomright'});
-
+/*
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
@@ -311,3 +311,4 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+*/
