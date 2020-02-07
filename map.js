@@ -284,8 +284,8 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
     this._div.innerHTML = '' +  (props ? `<h4>${props.ADM0_NAME}</h4>` +
-         props.ConfCases + ' Cases <br/>'+
-        (props.TotalDeaths ? `${props.TotalDeaths} Deaths`: '')
+         props.ConfCases.toLocaleString() + ' Cases <br/>'+
+        (props.TotalDeaths ? `${props.TotalDeaths.toLocaleString()} Deaths`: '')
         : 'Hover over a country or click in mobile');
 };
 
