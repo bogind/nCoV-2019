@@ -36,7 +36,7 @@ function highlightFeature(e) {
         weight: 5,
         color: '#666',
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 1
     });
 
     info.update(layer.feature.properties);
@@ -50,16 +50,18 @@ function resetHighlight(e) {
         weight: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 1
+        fillOpacity: 0.7
     });
 
     info.update();
+    CasesByProvince.bringToFront()
 }
 function zoomToFeature(e) {
     var layer = e.target;
-    layer.openPopup()
+    console.log(layer)
+    info.update(layer.feature.properties);
     
-    //map.fitBounds(e.target.getBounds());
+    
 }
 
 function getColor(d) {
@@ -85,10 +87,7 @@ function polygonStyle(feature) {
 }
 
 function onEachFeature(feature, layer) {
-    if (feature.properties) {
-        layer.bindPopup(`<h4>${feature.properties.ADM0_NAME}</h4>\
-        Confirmed Cases: ${feature.properties.ConfCases}`);
-    }
+
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
@@ -101,17 +100,7 @@ let CasesByCountryPolygons =  L.esri.featureLayer({
     url: 'https://services.arcgis.com/5T5nSi527N4F7luB/ArcGIS/rest/services/Cases_by_country_Plg/FeatureServer/0',
     style:polygonStyle,
     onEachFeature: onEachFeature
-    /*function(feature, layer) {
-        if (feature.properties) {
-            layer.bindPopup(`${feature.properties.ConfCases}`);
-        }
-        layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
-        });
-        
-    }*/
+
 }).addTo(map)
 
 
@@ -294,9 +283,10 @@ info.onAdd = function (map) {
 
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
-    this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-        '<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-        : 'Hover over a state');
+    this._div.innerHTML = '' +  (props ? `<h4>${props.ADM0_NAME}</h4>` +
+         props.ConfCases + ' Cases <br/>'+
+        (props.TotalDeaths ? `${props.TotalDeaths} Deaths`: '')
+        : 'Hover over a country or click in mobile');
 };
 
 info.addTo(map);
